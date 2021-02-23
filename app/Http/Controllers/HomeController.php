@@ -468,6 +468,7 @@ class HomeController extends Controller
      ]);
     $category = new Category;
     $category->name=$request['name'];
+    $category->featured=$request['featured'];
      $slug=Str::slug($request['name']);
      $n=1;
      $slu=$slug;
@@ -480,7 +481,7 @@ class HomeController extends Controller
      if($request->hasFile('pic')){ 
         $uploadedFile = $request->file('pic');
         if ($uploadedFile->isValid()) {
-            $category->photo=FileUpload::photo($request,'pic','cat','cats',500,500);
+            $category->photo=FileUpload::photo($request,'pic','cat','cats',800,800);
              }
     }
      if($request['parent']!=0 ){
@@ -512,7 +513,7 @@ public function updatecategory(Request $request){
        $oldpic=$category->photo;
        
        if ($uploadedFile->isValid()) {
-           $category->photo=FileUpload::photo($request,'pic','cat','cats',500,500);
+           $category->photo=FileUpload::photo($request,'pic','cat','cats',800,800);
             }
 
             if($oldpic && File::exists($oldpic)){

@@ -28,6 +28,14 @@
             @endif
             </select>
         </div>
+        <div class="form-group pr-5">
+          <label for="n">Featured</label>
+          <select name="featured" id="n" class="form-control">
+              <option value="1">True</option>
+          <option value="0">False</option>
+          
+          </select>
+      </div>
         @csrf
         <input type="submit" value="Save" class="btn btn-primary">
     </form>
