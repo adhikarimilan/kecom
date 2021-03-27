@@ -27,6 +27,7 @@ $(document).ready( function () {
                     <th><i class="far fa-star"></i></th>
                     <th>Price</th>
                     <th>Sale price</th>
+                    <th>Stock</th>
                     <th>&nbsp;</th>
                     <th>&nbsp;</th>
                   </tr>
@@ -38,6 +39,7 @@ $(document).ready( function () {
                     <th><i class="far fa-star"></i></th>
                     <th>Price</th>
                     <th>Sale price</th>
+                    <th>Stock</th>
                     <th>&nbsp;</th>
                     <th>&nbsp;</th>
                   </tr>
@@ -56,6 +58,7 @@ $(document).ready( function () {
                   </td>
                   <td>Rs. {{$product->reg_price}}</td>
                   <td>{{$product->sale_price ?? '-'}}</td>
+                  <td>{{$product->stock_quantity ?? '-'}}</td>
                     <td><a href="{{url('editproduct/'.$product->id)}}" class="btn btn-primary  mb-2">Edit</a></td>
                     <td><form method="POST" action="{{url('delproduct')}}" style="display:inline;">
                             @csrf

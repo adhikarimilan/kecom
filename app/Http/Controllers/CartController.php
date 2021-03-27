@@ -23,16 +23,21 @@ class CartController extends Controller
         //dd($value);
         $items=[];
         $product=[];
+        $cart_no=0;
         if($value!=null){
             // dd(Cart::where('cookie','=',$value)->take(1)->get());
              //if(count(Cart::where('cookie','=',$value)->take(1))>0){
                 $items=Cart::where('cookie','=',$value)->orderBy('created_at','DESC')->get();
+                foreach($items as $item)
+                {
+                    $cart_no+=$item->quantity;
+                }
             //}
             //dd($product);
             //dd($items);
         }
         $similarprods=Product::inRandomOrder()->limit(4)->get();
-        return view('cart')->with(['items'=>$items,'cart_no'=>count($items),'similar_prods'=>$similarprods]);
+        return view('cart')->with(['items'=>$items,'cart_no'=>$cart_no,'similar_prods'=>$similarprods]);
     
 }
 

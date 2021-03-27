@@ -23,15 +23,20 @@ class UserController extends Controller
        // dd($value);
         $items=[];
         $product=[];
+        $cart_no=0;
         if($value!=null){
             //dd(count(Cart::where('cookie','=',$value)->take(1)));
             //  if(count(Cart::where('cookie','=',$value)->take(1))>0){
                 $items=Cart::where('cookie','=',$value)->orderBy('created_at','DESC')->get();
                 //dd($items);
             // }
+                foreach($items as $item)
+                {
+                    $cart_no+=$item->quantity;
+                }
         }
         //dd(count($items));
-        $this->cart_no = count($items);
+        $this->cart_no = $cart_no;
         return;
     }
 

@@ -22,12 +22,18 @@ class CheckoutController extends Controller
         //dd($value);
         $items=[];
         $product=[];
+        $cart_no=0;
         if($value!=null){
              //dd(Cart::where('cookie','=',$value)->take(1)->get());
              if(Cart::where('cookie','=',$value)->take(1)->count()>0){
                 $items=Cart::where('cookie','=',$value)->orderBy('created_at','DESC')->get();
+                $cart_no=0;
+                foreach($items as $item)
+                {
+                    $cart_no+=$item->quantity;
+                }
                 //dd($value);
-                return view('product.checkout')->with(['items'=>$items,'cart_no'=>count($items)]);
+                return view('product.checkout')->with(['items'=>$items,'cart_no'=>$cart_no]);
 
             }
             //dd($product);
@@ -108,11 +114,27 @@ foreach($items as $item){
     $order_product->product_price=$item->product->price();
     $order_product->weight=$item->weight;
     $order_product->message=$item->message;
+    $prod=$item->product;
+    dump($prod);
+    if($item->product->m_stock) 
+    if($prod->stock_quantity <= $item->quantity){
+        $order_product->quantity=$item->product->stock_quantity;
+        $prod->stock_quantity=0;
+        $prod->save();
+        
+    }
+    else{
+        $order_product->quantity=$item->quantity;
+        $prod->stock_quantity=$prod->stock_quantity-$item->quantity;
+        $prod->save(); 
+    }
+    else
     $order_product->quantity=$item->quantity;
+    //dump($prod);
     $order_product->save();
     $item->delete();
 }
-
+dd('spop');
 session()->forget('coupon');
 return redirect('/dashboard')->with('success','Congratulations your order has been placed succesfully');
 

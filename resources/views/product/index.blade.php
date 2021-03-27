@@ -3,7 +3,7 @@
 <section class="product-banner-section img_wrapper">
     <img src="img/service-back.jpg">
     <div class="pb-caption text-center">
-      <span>Our Sweet</span>
+      <span>Our</span>
       <h1>Products</h1>
     </div>
   </section>

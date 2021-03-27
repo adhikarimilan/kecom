@@ -22,6 +22,7 @@ class ProductController extends Controller
         $value = Cookie::get('cart');
         $items=[];
         $product=[];
+        $cart_no=0;
         //dd(count($items));
         if($value!=null){
             // dd(Cart::where('cookie','=',$value)->take(1)->get());
@@ -29,9 +30,13 @@ class ProductController extends Controller
                 $items=Cart::where('cookie','=',$value)->orderBy('created_at','DESC')->get();
             //}
             //dd($product);
+                foreach($items as $item)
+                {
+                    $cart_no+=$item->quantity;
+                }
         }
         
-        $this->cart_no = count($items);
+        $this->cart_no = $cart_no;
        // dd("alright");
         return;
     }
@@ -84,11 +89,11 @@ class ProductController extends Controller
         }
         if(isset($r['sort']) && trim($r['sort'])!=""){
             if($r['sort']=="low_to_high"){
-                $products=$products->orderBy('price')->paginate($pagination);
+                $products=$products->orderBy('sale_price')->orderby('reg_price')->paginate($pagination);
                 //dd($products);
             }
             if($r['sort']=="high_to_low"){
-                $products=$products->orderBy('price','DESC')->paginate($pagination);  
+                $products=$products->orderBy('sale_price','DESC')->paginate($pagination);  
             }
 
         }

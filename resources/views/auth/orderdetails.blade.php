@@ -2,6 +2,8 @@
 @section('content')
 @if($orderprods[0]->order->canceled==1)
 <h3 class="m-3 text-center alert-danger alert">This order has been canceled</h3>
+@elseif($orderprods[0]->order->shipped)
+<h3 class="m-3 text-center alert-info alert">This order has been shipped</h3>
 @else
 <h3 class="m-3 text-center">{{$orderprods[0]->order->verified==1?'This order has been Verified':'This order is not verified yet'}}</h3>
 @endif
@@ -78,6 +80,12 @@
         @csrf
 <input type="hidden" name="oid" value="{{$orderprods[0]->order->id}}">
 <input type="submit" value="Cancel Order" class="btn btn-danger btn-lg m-2">
+</form>
+@else 
+<form action="{{route('order.cancel')}}" method="post">
+        @csrf
+<input type="hidden" name="oid" value="{{$orderprods[0]->order->id}}">
+<input type="submit" value="Uncancel Order" class="btn btn-info btn-lg m-2">
 </form>
 @endif
 @if($orderprods[0]->order->shipped==0 && $orderprods[0]->order->verified==1)

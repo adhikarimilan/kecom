@@ -95,9 +95,9 @@
                     </div>
                     @if(count($items)>0)
                     <ul class="order-details-form mb-4">
-                        <li class="font-weight-bold"><span>Product</span> <span>weight</span><span>Total</span></li>
+                        <li class="font-weight-bold"><span>Product</span> <span>Quantity</span><span>Total</span></li>
                         @foreach ($items as $item)
-                    <li><span>{{$item->product->name}} </span> <span>{{$item->weight}} lb</span><span>Rs.{{ ceil($item->quantity * $item->product->price() *  $item->weight )}}</span></li>
+                    <li><span>{{$item->product->name}} </span> <span>{{$item->quantity}} </span><span>Rs.{{ ceil($item->quantity * $item->product->price() *  $item->weight )}}</span></li>
                         @endforeach
                         <li><span>Subtotal</span><span></span><span>Rs.<?php
                             $subtotal=0; 

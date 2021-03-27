@@ -4,7 +4,7 @@
 <section class="product-banner-section img_wrapper">
         <img src="{{asset('img/service-back.jpg')}}">
         <div class="pb-caption text-center">
-            <span>Our Sweet</span>
+            <span>Our</span>
             <h1>Products</h1>
         </div>
     </section>
@@ -39,25 +39,46 @@
                             <div class="prod-price mt-3" data-mainPrice="{{$product->price()}}"><span id="money"> @if ($product->sale_price)
 								<span class="prod-price">Rs.{{$product->sale_price}}</span>
                                 <del class="text-dark">Rs.{{$product->reg_price}}</del>	
+                                <span class="centoff text-muted">-{{ceil((1-$product->price()/$product->reg_price) * 100)}}%</span>
 								@else
 								<span class="prod-price">Rs.{{$product->price()}}</span>	
 								@endif </span></div>
                             <div class="form-group mt-3 text-muted">
-                                <label class="font-weight-bold">Quantity</label>
+                                <label class="font-weight-bold">Quantity @if ($product->m_stock && $product->stock_quantity<5)
+                                    <span class="stock_rem">{{$product->stock_quantity. " items left"}}</span>
+                                @endif </label>
                                 <select id="prod-weight" name="quantity" class="form-control">
+                                    @if ($product->m_stock && $product->stock_quantity<5)
+                                    @if ($product->stock_quantity<1)
+                                    <option value="0">0 </option>  
+                                    @else
+                                        
+                                    
+                                    @php
+                                    for($i=0;$i<$product->stock_quantity;$i++){
+                                      echo "<option value='".($i+1)."'>".($i+1)." </option>";
+                                    //echo $i+1;
+                                    }
+                                        
+                                    @endphp @endif
+                                    @else 
                                     <option value="1">1 </option>
                                     <option value="2">2 </option>
                                     <option value="3">3 </option>
                                     <option value="4">4 </option>
                                     <option value="5">5 </option>
+                                    @endif
+                                    
                                 </select>
                             </div>
                             
-                            
-                            <div class="form-group">
+                            @if($product->details)
+                               <div class="form-group">
                                 <label class="font-weight-bold text-muted">Details</label>
                                 <div>{{$product->details}}</div>
-                            </div>
+                            </div> 
+                            @endif
+                            
                             <div class="form-group">
                                 <label class="font-weight-bold text-muted">Category: </label>
                                 <span>
@@ -74,7 +95,7 @@
                                 </span>
                             </div>
                             <input type="hidden" name='id' value='{{$product->id}}'>
-                            <button type="button" class="btn btn1 btn-block btn-sb" onclick="disable()" id='btn-sb'>ADD TO CART</button>
+                            <button type="button" class="btn btn1 btn-block btn-sb" onclick="disable()" id='btn-sb' @if ($product->m_stock && $product->stock_quantity<1) disabled @endif>ADD TO CART</button>
                         </form>
                     </div>
                 </div>
@@ -165,6 +186,18 @@ function disable(){
 <style>
     .btn1:disabled , .btn1[disabled] {
     opacity: 1;
+}
+.centoff{
+    padding: 0.1em;
+    font-size: 0.7em;
+    color: wheat;
+    background: gold;
+}
+.stock_rem{
+    font-size: 0.6em;
+    padding:5px;
+    font-style: italic;
+    background: gold;
 }
 </style>
 

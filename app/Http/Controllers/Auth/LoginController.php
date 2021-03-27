@@ -46,16 +46,21 @@ class LoginController extends Controller
     public function cart(){
         $value = Cookie::get('cart');
         //dd($value);
-        $items=0;
+        $items=0;$cart_no=0;
         if($value!=null){
             //dd(count(Cart::where('cookie','=',$value)->take(1)));
             //  if(count(Cart::where('cookie','=',$value)->take(1))>0){
-                $items=Cart::where('cookie','=',$value)->count();
+                $items=Cart::where('cookie','=',$value)->get();
                 //dd($items);
             // }
+            
+                foreach($items as $item)
+                {
+                    $cart_no+=$item->quantity;
+                }
         }
         //dd($items);
-        $this->cart_no = $items;
+        $this->cart_no = $cart_no;
         return;
     }
 

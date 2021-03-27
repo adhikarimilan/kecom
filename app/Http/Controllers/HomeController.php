@@ -97,7 +97,10 @@ class HomeController extends Controller
         $this->validate($request,[
             'name'=>'required',
             'details'=>'nullable',
-            'price'=>'required|integer',
+            'reg_price'=>'required|integer',
+            'sale_price'=>'nullable|integer',
+            'm_stock'=>'nullable|boolean',
+            'stock_quantity'=>'nullable|min:0',
             'description'=>'required',
             'image'=>'required|image|mimes:jpeg,png,jpg|max:5125',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg|max:5125'
@@ -114,12 +117,17 @@ class HomeController extends Controller
         }
         $product->slug=$slu;
         $product->details=$request['details'];
-        $product->price=$request['price'];
+        if($request['m_stock']=="1"){
+            $product->m_stock=$request['m_stock'];
+            $product->stock_quantity=$request['stock_quantity'];
+        }
+        $product->reg_price=$request['reg_price'];
+        $product->sale_price=$request['sale_price'];
         $product->description=$request['description'];
         if($request['featured']=="1")
         $product->featured='1';
-        if($request['has_flavours']=="1")
-        $product->has_flavours='1';
+        // if($request['has_flavours']=="1")
+        // $product->has_flavours='1';
          //dd($request->all());
         // Handle File Upload
         // if($request->hasFile('image')){
@@ -163,7 +171,7 @@ class HomeController extends Controller
             }
         }
          else {
-            dd('noimage');
+            //dd('noimage');
             $fileNameToStore = 'noimage.jpg';
         }
 
@@ -191,7 +199,7 @@ class HomeController extends Controller
          }
          
 
-        $product->image=$fileNameToStore;
+        //$product->image=$fileNameToStore;
         $product->save();
 
         if($request['category']!=null && $request['category'][0]!='0'){
@@ -234,6 +242,8 @@ class HomeController extends Controller
             'id'=>'required',
             'name'=>'required',
             'details'=>'nullable',
+            'm_stock'=>'nullable|boolean',
+            'stock_quantity'=>'nullable|min:0',
             'reg_price'=>'required|integer',
             'sale_price'=>'nullable|integer',
             'description'=>'required',
@@ -247,6 +257,14 @@ class HomeController extends Controller
         $product = Product::findOrFail($id);
         $product->name=$request['name'];
         $product->details=$request['details'];
+        if($request['m_stock']=="1"){
+            $product->m_stock=$request['m_stock'];
+            $product->stock_quantity=$request['stock_quantity'];
+        }
+        else{
+            $product->m_stock=0;
+            $product->stock_quantity=null;
+        }
         $product->reg_price=$request['reg_price'];
         $product->sale_price=$request['sale_price'];
         $product->description=$request['description'];
@@ -254,10 +272,10 @@ class HomeController extends Controller
         $product->featured='1';
         else
         $product->featured='0';
-        if($request['has_flavours']=="1")
-        $product->has_flavours='1';
-        else
-        $product->has_flavours='0';
+        // if($request['has_flavours']=="1")
+        // $product->has_flavours='1';
+        // else
+        // $product->has_flavours='0';
          //dd($request->all());
         // Handle File Upload
         // if($request->hasFile('image')){
@@ -434,11 +452,11 @@ class HomeController extends Controller
     //dd($oid);
     $order=Order::findOrFail($oid);
     //dd($order);
-        $order->canceled=1;
+        $order->canceled=! $order->canceled;
         $order->shipped=0;
-        $order->verefied=0;
+        $order->verified=0;
         $order->save();
-        return redirect('orders')->with("success",'Successfully verified');
+        return redirect('orders')->with("success",'Successfully done');
         
  }
 

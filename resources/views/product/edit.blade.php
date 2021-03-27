@@ -54,6 +54,19 @@
             <label for="">Details</label>
             <textarea  rows="3" class="form-control" id="details" placeholder="enter the product's description" name="details">{{$product->details}}</textarea>
           </div>
+         <div class="form-group col-lg-6 pt-3 pl-3" >
+          <input type="checkbox" name="m_stock" value='1' id="m_stock" class="" style="transform:scale(2,2);width:20px;" onchange="changed(this);" @if($product->m_stock) checked @endif>
+          <label for="m_stock" >
+          Manage Stock
+        </label><br>
+        <span id="stock" @if(!$product->m_stock) style="display: none;" @endif >
+          <input type="number" name="stock_quantity" value='{{$product->stock_quantity}}' id="stock_quantity" min="0" style="width:50px;" max="100">
+          <label for="stock_quantity" >
+          Stock Quantity
+        </label>
+        </span>
+        
+        </div>
                 <div class="form-group col-lg-12">
                         <label for="">Description</label>
                         <textarea  rows="8" class="form-control" id="description" placeholder="enter the product's description" name="description">{{$product->description}}</textarea>
@@ -174,4 +187,20 @@
       <script>
         CKEDITOR.replace( 'description' );
       </script>
+@endsection
+
+@section('scripts')
+<script>
+  function changed(arg){
+  if(arg.checked){
+    $('#stock').show();
+  }
+  else{
+    $('#stock').hide();
+    //$('#stock_quantity').val('0');
+  }
+}
+
+</script>
+
 @endsection

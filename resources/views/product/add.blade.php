@@ -15,6 +15,7 @@
 </style>
    <h2 class="text-center mt-3 mb-3">Add a Product</h2>
    <hr>
+   @include('inc.messages')
    <div class="container mt-5">
    <form action="{{url('product/save')}}" method="post" enctype="multipart/form-data">
         <div class="form-section">
@@ -24,7 +25,7 @@
         <div class="form-row">
             <div class="form-group col-lg-4">
               <label for="">Product Name</label>
-              <input type="text" class="form-control" id="name" placeholder="Cake Vanilla" name="name">
+              <input type="text" class="form-control" id="name"  name="name">
             </div>
         
             <div class="form-group col-lg-4">
@@ -33,7 +34,7 @@
                   <div class="input-group-prepend">
                         <span class="input-group-text" id="rs-addon">Rs</span>
                       </div>
-                  <input type="number" class="form-control" id="price" placeholder="600" aria-describedby="rs-addon" name="reg_price" value="">
+                  <input type="number" class="form-control" id="price"  aria-describedby="rs-addon" name="reg_price" value="">
                     </div>
             </div>
             <div class="form-group col-lg-4">
@@ -50,6 +51,19 @@
         <div class="form-group col-lg-6">
           <label for="">Details</label>
           <textarea  rows="3" class="form-control" id="details" placeholder="enter the product's small details " name="details"></textarea>
+        </div>
+        <div class="form-group col-lg-6 pt-3 pl-3" >
+          <input type="checkbox" name="m_stock" value='1' id="m_stock" class="" style="transform:scale(2,2);width:20px;" onchange="changed(this);">
+          <label for="m_stock" >
+          Manage Stock
+        </label><br>
+        <span id="stock" style="display: none;">
+          <input type="number" name="stock_quantity" value='1' id="stock_quantity" min="0" style="width:50px;" max="100">
+          <label for="stock_quantity" >
+          Stock Quantity
+        </label>
+        </span>
+        
         </div>
               <div class="form-group col-lg-12">
                       <label for="">Description</label>
@@ -75,11 +89,7 @@
           <input type="checkbox" name="featured" value='1' id='cb' class="" style="transform:scale(2,2);width:20px;">
           <label for="cb">
           Set as Featured
-        </label><br><br>
-        <input type="checkbox" name="has_flavours" value='1' id='has_flavours' class="" style="transform:scale(2,2);width:20px;">
-          <label for="has_flavours">
-          Has Flavours
-        </label>
+        </label><br>
         </div>
         @if(count($categories)>0)
         <div class="form-group col-lg-2 pt-5">
@@ -153,4 +163,19 @@
       <script>
         CKEDITOR.replace( 'description' );
       </script>
+@endsection
+@section('scripts')
+<script>
+  function changed(arg){
+  if(arg.checked){
+    $('#stock').show();
+  }
+  else{
+    $('#stock').hide();
+    $('#stock_quantity').val('0');
+  }
+}
+
+</script>
+
 @endsection

@@ -32,7 +32,9 @@
         @if($order->canceled==1)
         <td><span class="badge badge-pill badge-danger">Canceled</span></td>
         @else
-        @if($order->verified==1)
+        @if($order->shipped==1)
+        <td><span class="badge badge-pill badge-success">Shipped</span></td>
+        @elseif($order->verified==1)
         <td><span class="badge badge-pill badge-success">Verified</span></td>
         @else 
         <td><span class="badge badge-pill badge-warning">verifying</span></td>
